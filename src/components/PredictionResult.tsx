@@ -1,0 +1,82 @@
+import { Card } from "@/components/ui/card";
+import { TrendingUp, Award, Target, Sparkles } from "lucide-react";
+
+interface PredictionResultProps {
+  result: {
+    yield: number;
+    category: string;
+    confidence: number;
+    model?: string;
+  } | null;
+}
+
+const PredictionResult = ({ result }: PredictionResultProps) => {
+  if (!result) {
+    return (
+      <Card className="glass-card p-8 flex flex-col items-center justify-center min-h-[420px] text-center">
+        <div className="w-20 h-20 rounded-2xl bg-muted/60 flex items-center justify-center mb-5">
+          <TrendingUp className="w-9 h-9 text-muted-foreground/50" />
+        </div>
+        <h3 className="text-lg font-semibold text-card-foreground font-sans mb-2">
+          No Prediction Yet
+        </h3>
+        <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
+          Fill in the farm parameters and click "Predict Crop Yield" to see results
+        </p>
+      </Card>
+    );
+  }
+
+  const categoryColor: Record<string, string> = {
+    High: "text-success",
+    Medium: "text-secondary",
+    Low: "text-destructive",
+  };
+
+  const categoryBg: Record<string, string> = {
+    High: "bg-success/10 border-success/20",
+    Medium: "bg-secondary/10 border-secondary/20",
+    Low: "bg-destructive/10 border-destructive/20",
+  };
+
+  return (
+    <Card className="glass-card-elevated p-8 animate-fade-in-up">
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
+          <span className="text-xs font-medium text-primary">Prediction Result</span>
+        </div>
+        <div className="text-sm text-muted-foreground space-y-1">
+          <p className="mx-auto max-w-md text-muted-foreground text-sm">Prediction generated from the trained model. Values are estimates and should be used for guidance only.</p>
+        </div>
+      </div>
+
+      {/* Main yield display */}
+      <div className="text-center mb-8 py-6">
+        <div className="text-7xl font-bold text-gradient font-sans tracking-tight">
+        </div>
+        <div className="text-muted-foreground mt-2 text-sm tracking-wide uppercase">tons / hectare</div>
+      </div>
+
+      {/* Metrics */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className={`rounded-xl p-5 border ${categoryBg[result.category] || ''} text-center transition-all hover:scale-[1.02]`}>
+          <Award className={`w-7 h-7 mx-auto mb-2 ${categoryColor[result.category] || 'text-muted-foreground'}`} />
+          <div className={`text-2xl font-bold font-sans ${categoryColor[result.category] || 'text-muted-foreground'}`}>
+            {result.category}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1.5">Yield Category</div>
+        </div>
+        <div className="rounded-xl p-5 border border-primary/20 bg-primary/5 text-center transition-all hover:scale-[1.02]">
+          <Target className="w-7 h-7 mx-auto mb-2 text-primary" />
+          <div className="text-2xl font-bold font-sans text-primary">
+            {Math.round(result.confidence)}%
+          </div>
+          <div className="text-xs text-muted-foreground mt-1.5">Model Confidence</div>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export default PredictionResult;
