@@ -53,7 +53,8 @@ const PredictionResult = ({ result }: PredictionResultProps) => {
 
       {/* Main yield display */}
       <div className="text-center mb-8 py-6">
-        <div className="text-7xl font-bold text-gradient font-sans tracking-tight">
+        <div className="text-7xl font-bold text-primary font-sans tracking-tight">
+          {result.yield.toFixed(1)}
         </div>
         <div className="text-muted-foreground mt-2 text-sm tracking-wide uppercase">tons / hectare</div>
       </div>
@@ -70,7 +71,7 @@ const PredictionResult = ({ result }: PredictionResultProps) => {
         <div className="rounded-xl p-5 border border-primary/20 bg-primary/5 text-center transition-all hover:scale-[1.02]">
           <Target className="w-7 h-7 mx-auto mb-2 text-primary" />
           <div className="text-2xl font-bold font-sans text-primary">
-            {Math.round(result.confidence)}%
+            {result.confidence.toFixed(0)}%
           </div>
           <div className="text-xs text-muted-foreground mt-1.5">Model Confidence</div>
         </div>
