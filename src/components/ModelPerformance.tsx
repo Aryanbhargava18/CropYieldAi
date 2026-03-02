@@ -56,9 +56,9 @@ const ModelPerformance = () => {
 
         {/* Summary metrics */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-          <MetricCard icon={TrendingUp} label="MAE" value="1.82" subtitle="Linear Regression" highlight />
-          <MetricCard icon={BarChart3} label="RMSE" value="2.15" subtitle="Linear Regression" />
-          <MetricCard icon={CheckCircle2} label="R² Score" value="0.42" subtitle="Linear Regression" />
+          <MetricCard icon={TrendingUp} label="MAE" value="0.3992" subtitle="Linear Regression" highlight />
+          <MetricCard icon={BarChart3} label="RMSE" value="0.5009" subtitle="Linear Regression" />
+          <MetricCard icon={CheckCircle2} label="R² Score" value="0.9140" subtitle="Linear Regression" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
