@@ -83,6 +83,7 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
         r2: 0.42,
       });
     };
+    //disabled
 
     try {
       // temporarily disable network call while recording video; backend still
