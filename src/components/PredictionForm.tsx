@@ -85,6 +85,10 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
     };
 
     try {
+      // temporarily disable network call while recording video; backend still
+      // returns incorrect values and throws errors we can't catch cleanly.
+      // We keep the original code commented for later restoration.
+      /*
       const features = buildFeatureVector(form);
       const res = await fetch("https://cropyeild-ml.onrender.com/predict", {
         method: "POST",
@@ -111,6 +115,10 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
         category,
         r2: 0.42, // the backend does not return an R² so we keep the constant
       });
+      */
+
+      // force fallback for now
+      throw new Error("API disabled for recording");
     } catch (err: unknown) {
       console.error("prediction API error", err);
       toast({
