@@ -118,19 +118,19 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
       */
 
       // force fallback for now
-      throw new Error("API disabled for recording");
-    } catch (err: unknown) {
-      console.error("prediction API error", err);
-      toast({
-        title: "Prediction failed",
-        description: err instanceof Error ? err.message : String(err),
-      });
-      // fall back to javascript model so the UI still responds
-      fallback();
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     throw new Error("API disabled for recording");
+  //   } catch (err: unknown) {
+  //     console.error("prediction API error", err);
+  //     toast({
+  //       title: "Prediction failed",
+  //       description: err instanceof Error ? err.message : String(err),
+  //     });
+  //     // fall back to javascript model so the UI still responds
+  //     fallback();
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <Card className="glass-card-elevated p-8">
