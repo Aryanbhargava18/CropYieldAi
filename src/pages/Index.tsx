@@ -13,8 +13,7 @@ const Index = () => {
   const [prediction, setPrediction] = useState<{
     yield: number;
     category: string;
-    confidence: number;
-    model: string;
+    r2: number;
   } | null>(null);
 
   return (
@@ -35,7 +34,7 @@ const Index = () => {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               Enter your farm parameters to get an ML-powered yield prediction
-              using our trained models (linear regression & decision tree).
+              using our linear regression model. The result includes the R² score.
             </p>
           </div>
 

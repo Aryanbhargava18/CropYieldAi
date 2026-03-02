@@ -4,15 +4,14 @@ import { Activity, TrendingUp, Target, BarChart3, CheckCircle2 } from "lucide-re
 
 const metricsData = [
   { model: "Linear Reg.", MAE: 1.82, RMSE: 2.15, R2: 0.42 },
-  { model: "Decision Tree", MAE: 0.95, RMSE: 1.28, R2: 0.78 },
 ];
 
 const radarData = [
-  { metric: "MAE", "Decision Tree": 75, "Linear Reg.": 52 },
-  { metric: "RMSE", "Decision Tree": 72, "Linear Reg.": 48 },
-  { metric: "R²", "Decision Tree": 78, "Linear Reg.": 42 },
-  { metric: "Train Speed", "Decision Tree": 85, "Linear Reg.": 95 },
-  { metric: "Interpretability", "Decision Tree": 90, "Linear Reg.": 95 },
+  { metric: "MAE", "Linear Reg.": 52 },
+  { metric: "RMSE", "Linear Reg.": 48 },
+  { metric: "R²", "Linear Reg.": 42 },
+  { metric: "Train Speed", "Linear Reg.": 95 },
+  { metric: "Interpretability", "Linear Reg.": 95 },
 ];
 
 const MetricCard = ({
@@ -51,16 +50,15 @@ const ModelPerformance = () => {
             Model Performance Metrics
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Comparison of Linear Regression and Decision Tree models
-            evaluated on MAE, RMSE, and R² metrics.
+            Evaluation of the linear regression model on MAE, RMSE and R² metrics.
           </p>
         </div>
 
         {/* Summary metrics */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-          <MetricCard icon={TrendingUp} label="Best MAE" value="0.95" subtitle="Decision Tree" highlight />
-          <MetricCard icon={BarChart3} label="Best RMSE" value="1.28" subtitle="Decision Tree" />
-          <MetricCard icon={CheckCircle2} label="Models Tested" value="2" subtitle="Classical ML" />
+          <MetricCard icon={TrendingUp} label="MAE" value="1.82" subtitle="Linear Regression" highlight />
+          <MetricCard icon={BarChart3} label="RMSE" value="2.15" subtitle="Linear Regression" />
+          <MetricCard icon={CheckCircle2} label="R² Score" value="0.42" subtitle="Linear Regression" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -90,13 +88,12 @@ const ModelPerformance = () => {
 
           {/* Radar Chart */}
           <Card className="glass-card-elevated p-6">
-            <h3 className="font-semibold font-sans text-card-foreground mb-6 text-lg">Model Comparison Radar</h3>
+            <h3 className="font-semibold font-sans text-card-foreground mb-6 text-lg">Model Performance Radar</h3>
             <ResponsiveContainer width="100%" height={320}>
               <RadarChart data={radarData}>
                 <PolarGrid stroke="hsl(80 15% 88% / 0.6)" />
                 <PolarAngleAxis dataKey="metric" tick={{ fontSize: 11, fill: 'hsl(150 10% 45%)' }} />
                 <PolarRadiusAxis tick={{ fontSize: 10, fill: 'hsl(150 10% 45%)' }} />
-                <Radar name="Decision Tree" dataKey="Decision Tree" stroke="hsl(42, 87%, 55%)" fill="hsl(42, 87%, 55%)" fillOpacity={0.15} strokeWidth={2} />
                 <Radar name="Linear Reg." dataKey="Linear Reg." stroke="hsl(210, 70%, 50%)" fill="hsl(210, 70%, 50%)" fillOpacity={0.1} strokeWidth={2} />
                 <Legend wrapperStyle={{ fontSize: '12px' }} />
                 <Tooltip />

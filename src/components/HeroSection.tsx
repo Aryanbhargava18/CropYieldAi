@@ -45,8 +45,8 @@ const HeroSection = () => {
 
           <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl animate-fade-in-up font-sans leading-relaxed animate-stagger-2">
             Predicting agricultural productivity using classical machine learning
-            on historical crop, soil, and weather data. Powered by Linear Regression
-            & Decision Tree models.
+            on historical crop, soil, and weather data. Powered by our Linear Regression
+            model.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-16 animate-fade-in-up animate-stagger-3">

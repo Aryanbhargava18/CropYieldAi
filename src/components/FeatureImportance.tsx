@@ -83,7 +83,7 @@ const FeatureImportance = () => {
                 {[
                   "One-hot encoding (categorical features)",
                   "Standard scaling (numerical features)",
-                  "Train-test split (80/20)",
+                  "Train-test split (90/10)",
                   "Scikit-learn Pipeline integration",
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-3 text-muted-foreground">

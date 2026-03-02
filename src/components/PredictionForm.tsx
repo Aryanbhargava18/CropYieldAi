@@ -10,8 +10,7 @@ import { Sprout, Loader2 } from "lucide-react";
 interface PredictionResult {
   yield: number;
   category: string;
-  confidence: number;
-  model: string;
+  r2: number; // R² score from the linear regression model
 }
 
 interface PredictionFormProps {
@@ -30,7 +29,6 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
     irrigationUsed: false,
     weatherCondition: "",
     daysToHarvest: "",
-    model: "Linear Regression",
   });
 
   const handlePredict = () => {
@@ -52,8 +50,7 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
       onPredict({
         yield: parseFloat(yieldVal.toFixed(2)),
         category,
-        confidence: parseFloat((75 + Math.random() * 20).toFixed(1)),
-        model: form.model,
+        r2: 0.42, // constant R2 for linear regression model
       });
       setLoading(false);
     }, 1500);
@@ -120,18 +117,6 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
           </Select>
         </div>
 
-        {/* model choice */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Prediction Model</Label>
-          <Select onValueChange={(v) => setForm({ ...form, model: v })} value={form.model}>
-            <SelectTrigger><SelectValue placeholder="Select model" /></SelectTrigger>
-            <SelectContent>
-              {['Linear Regression', 'Decision Tree'].map((m) => (
-                <SelectItem key={m} value={m}>{m}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
 
         <div className="space-y-2">
           <Label className="text-sm font-medium">Rainfall (mm)</Label>

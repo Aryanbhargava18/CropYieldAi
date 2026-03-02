@@ -17,7 +17,7 @@ const steps = [
   {
     icon: Brain,
     title: "ML Models",
-    desc: "Linear Regression, Decision Tree",
+    desc: "Linear Regression",
     accent: "primary",
   },
   {
