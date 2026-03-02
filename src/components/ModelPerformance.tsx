@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Activity, TrendingUp, Target, BarChart3, CheckCircle2 } from "lucide-react";
 
 const metricsData = [
-  { model: "Linear Reg.", MAE: 1.82, RMSE: 2.15, R2: 0.42 },
+  { model: "Linear Reg.", MAE: 0.3992, RMSE: 0.5009, R2: 0.9140 },
 ];
 
 const radarData = [
