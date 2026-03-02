@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Sprout, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PredictionResult {
   yield: number;
@@ -18,6 +19,7 @@ interface PredictionFormProps {
 }
 
 const PredictionForm = ({ onPredict }: PredictionFormProps) => {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     region: "",
@@ -31,9 +33,37 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
     daysToHarvest: "",
   });
 
-  const handlePredict = () => {
+  const buildFeatureVector = (form: typeof form) => {
+    // scaler parameters extracted from the deployed model's scaler.pkl
+    // the API currently expects a list of 3 numbers; the regression
+    // model itself was trained on 20 features but the backend is broken
+    // (see notes in README or server patch below). we scale numeric
+    // values here to match the scaler so that future requests may work
+    const mean = [549.98190073, 27.5049652, 104.495025];
+    const scale = [259.85119035, 7.22060398, 25.9533993];
+
+    const rainfall = Math.max(0, parseFloat(form.rainfall) || 0);
+    const temp = Math.max(0, parseFloat(form.temperature) || 0);
+    const days = Math.max(0, parseFloat(form.daysToHarvest) || 0);
+
+    const scaled = [
+      (rainfall - mean[0]) / scale[0],
+      (temp - mean[1]) / scale[1],
+      (days - mean[2]) / scale[2],
+    ];
+
+    // we only send the three numeric features; the back end will
+    // eventually need to perform categorical encoding or accept a full
+    // 20‑element vector. the server code shown in the repo currently
+    // crashes because scaler.transform is applied to the full vector.
+    return scaled;
+  };
+
+  const handlePredict = async () => {
     setLoading(true);
-    setTimeout(() => {
+
+    // fallback result in case the network call fails
+    const fallback = () => {
       const rainfall = Math.max(0, parseFloat(form.rainfall) || 200);
       const temp = Math.max(0, parseFloat(form.temperature) || 25);
       const days = Math.max(0, parseFloat(form.daysToHarvest) || 120);
@@ -50,10 +80,48 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
       onPredict({
         yield: parseFloat(yieldVal.toFixed(2)),
         category,
-        r2: 0.42, // constant R2 for linear regression model
+        r2: 0.42,
       });
+    };
+
+    try {
+      const features = buildFeatureVector(form);
+      const res = await fetch("https://cropyeild-ml.onrender.com/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ features }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`api returned ${res.status}`);
+      }
+
+      const data = await res.json();
+      if (typeof data.prediction !== "number") {
+        throw new Error("invalid response from server");
+      }
+
+      const yieldVal = data.prediction;
+      let category = "Low";
+      if (yieldVal > 6) category = "High";
+      else if (yieldVal > 3.5) category = "Medium";
+
+      onPredict({
+        yield: parseFloat(yieldVal.toFixed(2)),
+        category,
+        r2: 0.42, // the backend does not return an R² so we keep the constant
+      });
+    } catch (err: unknown) {
+      console.error("prediction API error", err);
+      toast({
+        title: "Prediction failed",
+        description: err instanceof Error ? err.message : String(err),
+      });
+      // fall back to javascript model so the UI still responds
+      fallback();
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
