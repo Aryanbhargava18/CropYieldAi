@@ -34,9 +34,9 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
   const handlePredict = () => {
     setLoading(true);
     setTimeout(() => {
-      const rainfall = parseFloat(form.rainfall) || 200;
-      const temp = parseFloat(form.temperature) || 25;
-      const days = parseFloat(form.daysToHarvest) || 120;
+      const rainfall = Math.max(0, parseFloat(form.rainfall) || 200);
+      const temp = Math.max(0, parseFloat(form.temperature) || 25);
+      const days = Math.max(0, parseFloat(form.daysToHarvest) || 120);
       const fertBonus = form.fertilizerUsed ? 1.2 : 0.8;
       const irrigBonus = form.irrigationUsed ? 1.15 : 0.9;
 
@@ -122,9 +122,15 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
           <Label className="text-sm font-medium">Rainfall (mm)</Label>
           <Input
             type="number"
+            min="0"
             placeholder="e.g. 250"
             value={form.rainfall}
-            onChange={(e) => setForm({ ...form, rainfall: e.target.value })}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === "" || parseFloat(v) >= 0) {
+                setForm({ ...form, rainfall: v });
+              }
+            }}
           />
         </div>
 
@@ -132,9 +138,15 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
           <Label className="text-sm font-medium">Temperature (°C)</Label>
           <Input
             type="number"
+            min="0"
             placeholder="e.g. 28"
             value={form.temperature}
-            onChange={(e) => setForm({ ...form, temperature: e.target.value })}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === "" || parseFloat(v) >= 0) {
+                setForm({ ...form, temperature: v });
+              }
+            }}
           />
         </div>
 
@@ -142,9 +154,15 @@ const PredictionForm = ({ onPredict }: PredictionFormProps) => {
           <Label className="text-sm font-medium">Days to Harvest</Label>
           <Input
             type="number"
+            min="0"
             placeholder="e.g. 120"
             value={form.daysToHarvest}
-            onChange={(e) => setForm({ ...form, daysToHarvest: e.target.value })}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === "" || parseFloat(v) >= 0) {
+                setForm({ ...form, daysToHarvest: v });
+              }
+            }}
           />
         </div>
 
